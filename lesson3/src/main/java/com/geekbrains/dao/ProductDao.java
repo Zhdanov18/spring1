@@ -1,10 +1,12 @@
 package com.geekbrains.dao;
 
+import com.geekbrains.models.Customer;
 import com.geekbrains.models.Product;
 import com.geekbrains.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDao {
@@ -48,6 +50,15 @@ public class ProductDao {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.delete(product);
+        transaction.commit();
+    }
+
+    public void showCustomers(Product product) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Product newProduct = session.get(Product.class, product.getId());
+        List<Customer> customers= newProduct.getCustomers();
+        System.out.println(Arrays.toString(newProduct.getCustomers().toArray()));
         transaction.commit();
     }
 }

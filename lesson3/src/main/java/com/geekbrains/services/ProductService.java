@@ -34,4 +34,6 @@ public class ProductService {
     public List<Product> findAllProducts() {
         return productDao.findAll();
     }
+
+    public void showCustomers(Product product) { productDao.showCustomers(product); }
 }

@@ -22,37 +22,23 @@ public class MainApp {
             List<Product> products = Arrays.asList(new Product("milk", 60), new Product("bread", 40), new Product("apple", 100));
             products.forEach(productService::saveProduct);
 
+
 //продажа
-            Customer customer1 = customerService.findCustomer("Bob");
-            Product product1 = productService.findProduct("milk");
-            customer1.addProduct(product1);
-            customerService.updateCustomer(customer1);
-
-            Customer customer2 = customerService.findCustomer("Jack");
-            List<Product> product2 = productService.findAllProducts();
-            customer2.setProducts(product2);
-            customerService.updateCustomer(customer2);
-
-            customers.get(2).addProduct(products.get(2));
-            customerService.updateCustomer(customers.get(2));
+            customerService.buy(customers.get(0).getId(), products.get(0));
+            customerService.buy(customers.get(1).getId(), products);
+            customerService.buy(customers.get(2).getId(), products.get(2));
 
 //какие товары покупал клиент
-            System.out.println(customer1);
-            System.out.println(Arrays.toString(customer1.getProducts().toArray()));
-
-            System.out.println(customer2);
-            System.out.println(Arrays.toString(customer2.getProducts().toArray()));
+            customerService.showProducts(customers.get(0));
+            customerService.showProducts(customers.get(1));
 
 //какие клиенты покупали товар
-            System.out.println(product1);
-            System.out.println(Arrays.toString(product1.getCustomers().toArray()));
+            productService.showCustomers(products.get(0));
 
 //удаление
-            Customer customer3 = customerService.findCustomer("Mike");
-            customerService.deleteCustomer(customer3);
+            customerService.deleteCustomer(customers.get(2));
+            productService.deleteProduct(products.get(2));
 
-            Product product3 = productService.findProduct("apple");
-            productService.deleteProduct(product3);
         } finally {
             HibernateSessionFactoryUtil.closeSessionFactory();
         }

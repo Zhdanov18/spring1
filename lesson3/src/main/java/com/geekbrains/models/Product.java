@@ -1,11 +1,12 @@
 package com.geekbrains.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,7 +18,7 @@ public class Product {
     @Column(name = "cost")
     private Integer cost;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "products_customers",
             joinColumns = @JoinColumn(name = "product_id"),

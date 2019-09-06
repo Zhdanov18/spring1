@@ -1,10 +1,12 @@
 package com.geekbrains.dao;
 
 import com.geekbrains.models.Customer;
+import com.geekbrains.models.Product;
 import com.geekbrains.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CustomerDao {
@@ -47,6 +49,29 @@ public class CustomerDao {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.delete(customer);
+        transaction.commit();
+    }
+
+    public void showProducts(Customer customer) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Customer newCustomer = session.get(Customer.class, customer.getId());
+        List<Product> products= newCustomer.getProducts();
+        System.out.println(Arrays.toString(newCustomer.getProducts().toArray()));
+        transaction.commit();
+    }
+
+    public void buy(Long customer_id, Product product) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.get(Customer.class, customer_id).addProduct(product);
+        transaction.commit();
+    }
+
+    public void buy(Long customer_id, List<Product> product) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.get(Customer.class, customer_id).setProducts(product);
         transaction.commit();
     }
 }
