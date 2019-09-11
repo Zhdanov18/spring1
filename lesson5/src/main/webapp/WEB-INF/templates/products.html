@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <title>Каталог товаров</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Товары:</h2>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${productsPage.content}">
+            <td th:text="${product.id}"/>
+            <td th:text="${product.title}"/>
+            <td th:text="${product.cost}"/>
+            <td>
+                <a th:href="@{/products/edit(id=${product.id})}" class="btn btn-primary">Редактировать</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${productsPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/products(size=${productsPage.size}, page=${pageNumber})} + ${filters}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==productsPage.number + 1} ? active"></a>
+    </div>
+
+    <form th:action="@{/products}" method="get">
+        <input th:name="min" type="number" placeholder="min" th:value="${min}">
+        <input th:name="max" type="number" placeholder="max" th:value="${max}">
+        <button type="submit" class="btn btn-primary">Фильтровать</button>
+    </form>
+</div>
+
+</body>
+</html>
